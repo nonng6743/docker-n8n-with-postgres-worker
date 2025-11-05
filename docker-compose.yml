@@ -1,3 +1,5 @@
+version: '3.8'
+
 volumes:
   db_storage:
   n8n_storage:
@@ -27,10 +29,8 @@ x-shared: &shared
   volumes:
     - n8n_storage:/home/node/.n8n
   depends_on:
-    redis:
-      condition: service_healthy
-    postgres:
-      condition: service_healthy
+    - redis
+    - postgres
   security_opt:
     - no-new-privileges:true
 
@@ -84,5 +84,6 @@ services:
     <<: *shared
     command: worker
     depends_on:
-      n8n:
-        condition: service_started
+      - n8n
+      - redis
+      - postgres
