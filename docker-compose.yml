@@ -66,10 +66,16 @@ services:
       - n8n_network
     volumes:
       - redis_storage:/data
-      - ./redis-entrypoint.sh:/usr/local/bin/redis-entrypoint.sh
     environment:
       - REDIS_PASSWORD=${REDIS_PASSWORD:-}
-    entrypoint: ["sh", "/usr/local/bin/redis-entrypoint.sh"]
+    command: >
+      sh -c "
+      if [ -n \"$$REDIS_PASSWORD\" ]; then
+        redis-server --requirepass \"$$REDIS_PASSWORD\" --appendonly yes
+      else
+        redis-server --appendonly yes
+      fi
+      "
     healthcheck:
       test: ['CMD-SHELL', 'if [ -n "$$REDIS_PASSWORD" ]; then redis-cli -a "$$REDIS_PASSWORD" ping || exit 1; else redis-cli ping || exit 1; fi']
       interval: 5s
