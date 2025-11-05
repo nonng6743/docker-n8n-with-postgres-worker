@@ -7,4 +7,3 @@ if [ -n "$REDIS_PASSWORD" ]; then
 else
     exec redis-server --appendonly yes
 fi
-
