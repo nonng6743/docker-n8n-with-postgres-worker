@@ -80,13 +80,11 @@ services:
 
   n8n:
     <<: *shared
-    cpus: 8
     ports:
       - "127.0.0.1:5678:5678"
 
   n8n-worker:
     <<: *shared
-    cpus: 6
     command: worker
     depends_on:
       - n8n
