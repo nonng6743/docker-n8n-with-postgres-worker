@@ -86,7 +86,7 @@ services:
 
   n8n-worker:
     <<: *shared
-    cpus: 8
+    cpus: 6
     command: worker
     depends_on:
       - n8n
